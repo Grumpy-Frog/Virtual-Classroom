@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'bootstrap3',
     'accounts',
-    'oauth_app',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
