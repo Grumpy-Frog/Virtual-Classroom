@@ -38,6 +38,7 @@
             {% if user.is_authenticated %}
                 <li><a href="#">Create Class</a></li>
                 <li><a href="#">Join Class</a></li>
+                <li><a href="/lobby" class="btn btn-simple">Channels</a></li>
                 <li><a href="{% url 'accounts:logout' %}" class="btn btn-simple">Log out</a></li>
             {% else %}
                 <li><a href="{% url 'accounts:login' %}" class="btn btn-simple">Log in</a></li>
