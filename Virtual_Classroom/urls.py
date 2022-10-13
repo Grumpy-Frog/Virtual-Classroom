@@ -19,11 +19,11 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.HomePage.as_view(), name='home'),
+    path('', include("classroom.urls", namespace="classroom")),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
+    path('classroom/', include("classroom.urls", namespace="classroom")),
     path('test/', views.TestPage.as_view(), name='test'),
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
 ]
-

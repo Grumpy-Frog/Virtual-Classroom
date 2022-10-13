@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'bootstrap3',
     'accounts',
+    'classroom',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
