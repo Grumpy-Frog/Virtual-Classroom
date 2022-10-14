@@ -17,8 +17,8 @@ def lobby(request):
 def room(request):
     return render(request, 'communication_channel/room.html')
 
-def getRoomName(request):
 
+def getRoomName(request):
     room_name = 'CSE-4500'
 
     return JsonResponse({'room_name': room_name}, safe=False)
@@ -61,7 +61,7 @@ def createMember(request):
     member, created = RoomMember.objects.get_or_create(
         name=name,
         uid=uid,
-        room_name= data['room_name']
+        room_name=data['room_name']
     )
 
     return JsonResponse({'name': name}, safe=False)

@@ -128,7 +128,7 @@ body{
     top: 10px;
     left: 10px;
     z-index: 9999;
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0,0,0,0.5);
     width: fit-content;
     padding: 10px;
     border-radius: 5px;
@@ -162,10 +162,10 @@ body{
     background-color: #fff;
     cursor: pointer;
     padding: 10px;
-    border-radius: 5px;
+    border-radius: 45px;
 
 }
 
 #leave-btn{
-    background-color: rgb(255, 80, 80, 1);
+    background-color: rgb(255,255, 255, 1);
 }

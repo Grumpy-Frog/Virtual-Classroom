@@ -6,10 +6,11 @@
 
     <section id="form-container">
 
-        <img id="logo" src="{% static 'images/chat-icon.png' %}"/>
+        <img id="logo" src="{% static 'images/chat-icon-2.png' %}"/>
 
         <div id="welcome-message">
-            <h1>Welcome to Virtual Classroom</h1>
+            <h1>Welcome to</h1>
+            <h1>Virtual Classroom</h1>
             <p>An online classroom platform!</p>
         </div>
 
@@ -21,7 +22,19 @@
                 </div>
 
                 <div class="form-field">
-                    <button onclick="handleSubmit()" type="button">Join Channel</button>
+                    <button onclick="handleSubmit()" type="button">Channel 1</button>
+                </div>
+            </div>
+        </form>
+        <form id="form">
+            <div class="field-wrapper">
+
+                <div class="form-field">
+                    <input type="hidden" name="room" placeholder="Enter room name..."  style="text-transform:uppercase"/>
+                </div>
+
+                <div class="form-field">
+                    <button onclick="handleSubmit()" type="button">Channel 2</button>
                 </div>
             </div>
         </form>
