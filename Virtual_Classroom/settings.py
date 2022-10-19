@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'accounts',
     'classroom',
+    'assignment',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',

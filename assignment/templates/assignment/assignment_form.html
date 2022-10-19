@@ -1,0 +1,10 @@
+{% extends "assignment/assignment_base.html" %}
+{% load bootstrap3 %}
+
+<h4>Create An Assignment</h4>
+  <form method="POST" action="{% url 'assignment:create' %}" id="AssignmentForm">
+  	{% csrf_token %}
+  	{% bootstrap_form form %}
+  	<input type="submit" value="Create" class="btn btn-primary btn-large">
+  </form>
+

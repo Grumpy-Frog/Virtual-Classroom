@@ -23,14 +23,10 @@ class CreateClassroom(LoginRequiredMixin, generic.CreateView):
     model = Classroom
     fields = ("name", "description")
 
-    def get_initial(self, *args, **kwargs):
-        initial = super(CreateClassroom, self).get_initial(**kwargs)
-        initial['code'] = random_str()
-        return initial
-
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+        self.object.code = random_str()
         self.object.save()
         ClassMember.objects.create(user=self.request.user, classroom=self.object, role='teacher')
         return super().form_valid(form)
