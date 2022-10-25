@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+import classroom.views as classroomView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,6 +25,12 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('allauth.urls')),
     path('lobby/', include('communication_channel.urls')),
+
+    path('join_classroom/', views.JoinClassroom.as_view()),
+    path('join/', views.joinClassroom),
+
+
+    path('classroom/', include("classroom.urls", namespace="classroom")),
     path('test/', views.TestPage.as_view(), name='test'),
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
 ]

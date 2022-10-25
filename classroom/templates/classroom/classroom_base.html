@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    {% block pregroup %}{% endblock %}
+    {% block group_content %}{% endblock %}
+    {% block postgroup %}{% endblock %}
+    <li><a href="join_classroom">Join Classroom</a></li>
+
+  </div>
+</div>
+
+{% endblock %}

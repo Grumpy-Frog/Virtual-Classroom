@@ -40,11 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'bootstrap3',
     'accounts',
+    'communication_channel',
+    'classroom',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'communication_channel',
 ]
 
 MIDDLEWARE = [
