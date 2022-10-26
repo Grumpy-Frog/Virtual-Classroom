@@ -27,7 +27,7 @@ class Classroom(models.Model):
     course = models.TextField(blank=True, default='')
     course_html = models.TextField(editable=False, default='', blank=True)
     code = models.CharField(max_length=255,editable=False)
-    members = models.ManyToManyField(User, through="ClassMember", related_name='members')
+    members = models.ManyToManyField(User,editable=True, through="ClassMember", related_name='members')
 
     def __str__(self):
         return self.name
@@ -48,11 +48,10 @@ class Classroom(models.Model):
 class ClassMember(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="memberships")
     user = models.ForeignKey(User, related_name='user_classrooms', on_delete=models.CASCADE)
-    role = models.CharField(max_length=56)
+    role = models.CharField(max_length=56, editable=True)
 
     def __str__(self):
         return self.user.username
-
     class Meta:
         unique_together = ("classroom", "user")
 

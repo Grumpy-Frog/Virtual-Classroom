@@ -5,7 +5,21 @@
 
     <h1>{{ classroom.name }}</h1>
     <h2> Member Count: {{ classroom.members.count }}</h2>
-    <h2> Clasroom joining code: {{ classroom.code }}</h2>
+    <h2> Classroom joining code: {{ classroom.code }}</h2>
+    <div class="col-md-4">
+        <div class="content">
+            {% if user.is_authenticated %}
+                <h2>
+                    Members:
+                    {% if user in classroom.members.all %}
+                        {% for member in classroom.members.all %}
+                            <h3 class="title list-group-item-heading">{{ member }}</h3>
+                        {% endfor %}
+                    {% endif %}
+                </h2>
+            {% endif %}
+        </div>
+    </div>
 
     <div class="content">
 
@@ -14,7 +28,7 @@
             <a href="{% url 'classroom:leave' slug=classroom.slug %}" class="btn btn-lg btn-fill btn-warning"><span
                     class="glyphicon glyphicon-remove-circle"></span> Leave</a>
         {% endif %}
-        <a href="/lobby" class="btn btn-lg btn-fill btn-warning"><span class="glyphicon glyphicon-remove-circle"></span> Channels</a>
+        <a href="/lobby?greeting={{ classroom.name }}" class="btn btn-lg btn-fill "> Channels</a>
 
     </div>
 
