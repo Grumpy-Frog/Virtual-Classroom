@@ -29,9 +29,11 @@ urlpatterns = [
     path('join_classroom/', views.JoinClassroom.as_view()),
     path('join/', views.joinClassroom),
 
+    path("articles/", include("articles.urls", namespace="articles")),
 
     path('classroom/', include("classroom.urls", namespace="classroom")),
     path('test/', views.TestPage.as_view(), name='test'),
     path('thanks/', views.ThanksPage.as_view(), name='thanks'),
+
 ]
 

@@ -12,7 +12,7 @@ class TestPage(TemplateView):
 
 
 class ThanksPage(TemplateView):
-    template_name = 'thanks.html'
+    template_name = 'show_message.html'
 
 
 class HomePage(TemplateView):
@@ -29,7 +29,7 @@ def joinClassroom(request):
     try:
         classroom = Classroom.objects.get(code=classroomCode)
         ClassMember.objects.create(user=request.user, classroom=classroom, role='student')
-        return render(request, "thanks.html")
+        return render(request, "show_message.html")
     except:
         print("error joining")
         return render(request, "NoClassroomFound.html")

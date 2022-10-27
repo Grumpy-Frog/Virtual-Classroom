@@ -42,10 +42,13 @@ INSTALLED_APPS = [
     'accounts',
     'communication_channel',
     'classroom',
+    'articles',
+    'gdstorage',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
@@ -128,8 +131,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR,'static')]
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # MEDIA
-MEDIA_ROOT = [os.path.join(BASE_DIR, 'media')]
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = 'media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -166,3 +169,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'virtualclassroom807@gmail.com'
 EMAIL_HOST_PASSWORD = 'myghmifdukweyupm'
 EMAIL_PORT = 587
+
+
+GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE = os.path.join(MEDIA_ROOT, "virtual-classroom-366708-eaf0ddc1a485.json")
+GOOGLE_DRIVE_STORAGE_SERVICE_EMAIL = "virtual-classroom@virtual-classroom-366708.iam.gserviceaccount.com"
