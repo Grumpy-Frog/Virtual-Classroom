@@ -3,8 +3,7 @@
         <strong>{{ assignment.creator.username }}</strong>
         <h5 class="media-heading">
             <time class="time"><a href="#">{{ assignment.assign_time }}</a></time>
-            <h2 class="classroom-name"> {{ assignment.description }}</h2>
-            <h2 class="classroom-name"><a href="{% url 'assignment:single' slug=assignment.classroom.slug pk=assignment.pk %}"> {{ assignment.title }}</a></h2>
+            <h2 class="title-list-group-item-heading"><a href="{% url 'assignment:single' slug=assignment.classroom.slug pk=assignment.pk %}"> {{ assignment.title }}</a></h2>
         </h5>
 
         <div class="media-footer">
@@ -19,10 +18,7 @@
 
                     <a href="{% url 'assignment:view' pk=assignment.pk %}" class="btn btn-lg btn-fill"><span
                             class="glyphicon glyphicon-plus-sign"></span>View Submissions</a>
-                {% else %}
-                    <a href="{% url 'assignment:submit' slug=assignment.classroom.slug pk=assignment.pk %}"
-                       class="btn btn-lg btn-fill"><span
-                            class="glyphicon glyphicon-plus-sign"></span>Submit Assignment</a>
+
                 {% endif %}
             {% endif %}
         </div>

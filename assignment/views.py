@@ -61,17 +61,19 @@ class UpdateAssignment(LoginRequiredMixin, generic.UpdateView):
 class AssignmentDetail(LoginRequiredMixin, generic.DetailView):
     model = Assignment
 
-    """
-        def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
         classroom = Classroom.objects.get(slug=self.kwargs.get('slug'))
         assignment = Assignment.objects.get(pk=self.kwargs.get('pk'))
         student = self.request.user
         context = super().get_context_data(**kwargs)
-        submitted = AssignmentSubmission.objects.exists(classroom=classroom, assignment=assignment, student=student)
+        submitted = AssignmentSubmission.objects.filter(classroom=classroom, assignment=assignment,
+                                                        student=student).exists()
         context["user_submitted"] = submitted
+        class_member = ClassMember.objects.get(user=self.request.user, classroom=classroom)
+        user_role = class_member.role
+        context["user_role_in_classroom"] = user_role
         print(submitted)
         return context
-    """
 
 
 class SubmitAssignment(LoginRequiredMixin, generic.CreateView):
@@ -106,3 +108,23 @@ class ViewAssignmentSubmissions(LoginRequiredMixin, SelectRelatedMixin, generic.
         assignment_id = self.kwargs.get("pk")
         assignment = Assignment.objects.get(pk=assignment_id)
         return queryset.filter(assignment=assignment)
+
+
+class Unsubmit(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
+    model = AssignmentSubmission
+    select_related = ("student", "classroom", 'assignment')
+
+    def get_success_url(self):
+        return reverse_lazy("assignment:single", kwargs={"slug": self.kwargs.get("slug"), "pk": self.kwargs.get("pk")})
+
+    def get_object(self, queryset=None):
+        classroom = Classroom.objects.get(slug=self.kwargs.get("slug"))
+        assignment = Assignment.objects.get(pk=self.kwargs.get("pk"))
+        queryset = self.get_queryset()
+        queryset = AssignmentSubmission.objects.get(classroom=classroom, assignment=assignment,
+                                                    student=self.request.user)
+        return queryset
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, "Unsubmitted. Don't forget to turn in your assignment")
+        return super().delete(*args, **kwargs)

@@ -11,5 +11,6 @@ urlpatterns = [
     path('all/<slug>', views.AssignmentList.as_view(), name="all"),
     path('assignment/<slug>/<int:pk>', views.AssignmentDetail.as_view(), name="single"),
     path('submit/<slug>/<int:pk>', views.SubmitAssignment.as_view(), name="submit"),
+    path('unsubmit/<slug>/<int:pk>', views.Unsubmit.as_view(), name="unsubmit"),
     path('view_submission/<int:pk>', views.ViewAssignmentSubmissions.as_view(), name="view"),
 ]
