@@ -11,5 +11,6 @@ class Article(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="assignments")
     creator = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="assignments")
     assign_time = models.DateTimeField(auto_now=True)
+    is_accepted = models.BooleanField(default=False)
 
 

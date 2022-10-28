@@ -74,5 +74,5 @@ class ArticlePage(TemplateView):
         context = super().get_context_data(*args, **kwargs)
         context['articles'] = Article.objects.all()
         context['classroom_code'] = self.request.GET.get('classroom_code')
-        print(self.request.POST.get('classroom_code'))
+        #print(self.request.POST.get('classroom_code'))
         return context

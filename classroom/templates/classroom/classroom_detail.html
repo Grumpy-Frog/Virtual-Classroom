@@ -28,14 +28,12 @@
             <a href="{% url 'classroom:leave' slug=classroom.slug %}" class="btn btn-lg btn-fill btn-warning"><span
                     class="glyphicon glyphicon-remove-circle"></span> Leave</a>
             <a href="{% url 'article:create' code=classroom.code slug=classroom.slug %}"
-               class="btn btn-lg btn-fill btn-warning"><span
-                    class="glyphicon glyphicon-remove-circle"></span> Post Article</a>
+               class="btn btn-lg btn-fill "> Post Article</a>
 
 
 
-            <a href="{% url 'article:articles' code=classroom.code slug=classroom.slug  %}?classroom_code={{ classroom.code }}"
-               class="btn btn-lg btn-fill btn-warning" methods="post"><span
-                    class="glyphicon glyphicon-remove-circle"></span> Articles</a>
+            <a href="{% url 'article:articles' code=classroom.code slug=classroom.slug %}?classroom_code={{ classroom.code }}"
+               methods="post" class="btn btn-lg btn-fill ">Articles</a>
         {% endif %}
         <a href="/lobby?greeting={{ classroom.name }}" class="btn btn-lg btn-fill "> Channels</a>
 
