@@ -1,0 +1,43 @@
+{% extends "classroom/classroom_base.html" %}
+
+{% block pregroup %}
+
+
+    <h1>{{ classroom.name }}</h1>
+    <h2> Member Count: {{ classroom.members.count }}</h2>
+    <h3> Code: {{ classroom.code }}</h3>
+
+    <div class="content">
+
+
+        {% if user in classroom.members.all %}
+            <a href="{% url 'classroom:leave' slug=classroom.slug %}" class="btn btn-lg btn-fill btn-warning"><span
+                    class="glyphicon glyphicon-remove-circle"></span> Leave</a>
+            {% if user_role_in_classroom == "teacher" %}
+                <a href="{% url 'assignment:create' code=classroom.code slug=classroom.slug %}"
+                   class="btn btn-lg btn-fill btn-warning"><span
+                        class="glyphicon glyphicon-remove-circle"></span> Post Assignment</a>
+            {% endif %}
+        {% endif %}
+
+    </div>
+
+{% endblock %}
+
+{% block group_content %}
+
+    <div class="col-md-8">
+        {% if classroom.assignments.count == 0 %}
+            <h2>No assignments in this classroom yet!</h2>
+
+        {% else %}
+
+            {% for assignment in classroom.assignments.all %}
+                {% include "assignment/_assignment.html" %}
+            {% endfor %}
+
+        {% endif %}
+    </div>
+{% endblock %}
+
+
