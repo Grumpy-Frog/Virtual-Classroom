@@ -43,7 +43,7 @@ class DeleteAssignment(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteVie
     select_related = ("creator", "classroom")
 
     def get_success_url(self):
-        return reverse_lazy("assignment:all", kwargs={"slug": self.kwargs.get("slug")})
+        return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
 
     def get_queryset(self):
         queryset = super().get_queryset()

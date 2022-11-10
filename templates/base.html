@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'assignment/css/master.css' %}">
-
+    {# <link rel="stylesheet" href="{% static 'style.css' %}"> #}
 
 </head>
 
@@ -36,11 +36,9 @@
 
         <ul class="nav navbar-nav navbar-right">
             {% if user.is_authenticated %}
-                <a href="{% url 'classroom:create' %}" class="btn btn-md btn-fill btn-warning"><span
-                    class="glyphicon glyphicon-plus-sign"></span> Create </a>
-                <a href="#" class="btn btn-md btn-fill btn-warning"><span
-                    class="glyphicon glyphicon-plus-sign"></span> Join </a>
-                <li><a href="{% url 'classroom:all' %}"class="btn btn-simple">Classrooms</a></li>
+                <li><a href="{% url 'classroom:create' %}" class="btn btn-simple"> Create </a></li>
+                <li><a href="#" class="btn btn-simple"> Join </a></li>
+                <li><a href="{% url 'classroom:all' %}" class="btn btn-simple">Classrooms</a></li>
                 <li><a href="{% url 'accounts:logout' %}" class="btn btn-simple">Log out</a></li>
             {% else %}
                 <li><a href="{% url 'accounts:login' %}" class="btn btn-simple">Log in</a></li>
