@@ -46,6 +46,13 @@ class CreateClassroom(LoginRequiredMixin, generic.CreateView):
 class SingleClassroom(generic.DetailView):
     model = Classroom
 
+    def get_context_data(self, **kwargs):
+        class_member = ClassMember.objects.get(user=self.request.user, classroom=self.object)
+        user_role = class_member.role
+        context = super().get_context_data(**kwargs)
+        context["user_role_in_classroom"] = user_role
+        return context
+
 
 class ListClassrooms(generic.ListView):
     model = Classroom
@@ -59,7 +66,6 @@ class LeaveGroup(LoginRequiredMixin, generic.RedirectView):
     def get(self, request, *args, **kwargs):
 
         try:
-
             membership = models.ClassMember.objects.filter(
                 user=self.request.user,
                 classroom__slug=self.kwargs.get("slug")

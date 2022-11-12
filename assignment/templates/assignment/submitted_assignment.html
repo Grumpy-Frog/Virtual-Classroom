@@ -1,0 +1,15 @@
+
+<div class="post media">
+	<div class="media-body">
+		<strong>{{ submission.student.username }}</strong>
+		<h5 class="media-heading">
+			<time class="time">{{ submission.submission_time }}</time>
+		</h5>
+        <a href="/media/{{ submission.file }}" download >
+                <img src="/media/{{ submission.file }}" alt="{{ submission.file }}"  width="104" height="142">
+        </a>
+		<div class="media-footer">
+
+		</div>
+	</div>
+</div>
