@@ -47,7 +47,7 @@
         <input type="hidden" value="{{ exam.name }}" name="paper">
         <input type="hidden" id="secs" value="{{ secs }}">
         <input type="hidden" id="mins" value="{{ mins }}">
-        <input type="hidden" id="professorname" value="{{ exam.teacher }}">
+        <input type="hidden" id=professorname" value="{{ exam.teacher.username }}">
         <input type="submit" value="Submit" id="PaperSubmit" onclick="submitFormOkay = true;" class="btn"
                style="border-color:#745959; color:#745959;"/>
     </form>

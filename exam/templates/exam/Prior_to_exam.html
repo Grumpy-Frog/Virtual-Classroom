@@ -8,7 +8,11 @@
         <div class="col-md-2"></div>
         <div class="col-md-6">
             <div class="ml-5 container">
-                Exam hasn't started yet!
+                {% if isStart == 1 %}
+                    Exam hasn't started yet!
+                {% else %}
+                    Exam has ended!
+                {% endif %}
             </div>
 
         </div>

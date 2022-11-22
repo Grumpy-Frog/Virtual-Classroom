@@ -2,15 +2,16 @@ from django.urls import path
 
 from exam import views
 
-app_name = 'assignment'
+app_name = 'exam'
 
 urlpatterns = [
     path('add_question/<code>/<slug>', views.AddQuestion.as_view(), name="addquestion"),
     path('questionPaper/<code>/<slug>', views.AddQuestionPaper.as_view(), name="addquestionpaper"),
-    path('exam/<code>/<slug>', views.CreateExam.as_view(), name="create_exam"),
+    path('CreateExam/<code>/<slug>', views.CreateExam.as_view(), name="create_exam"),
     path('teacher/viewpreviousexams/<code>', views.view_previousexams_teacher, name="teacher-previous"),
     path('teacher/viewresults/<code>', views.view_results_teacher, name="teacher_view_result"),
     path('prof/viewstudents/<code>', views.view_students_teacher, name="teacher-student"),
+    path('cheat/<str:professorname>', views.Cheating.as_view(), name="cheat"),
 
     path('student/viewexams/<code>', views.view_exams_student, name="view_exams_student"),
     path('student/view_previous_exams/<slug>', views.student_view_previous, name="view_previous_student"),

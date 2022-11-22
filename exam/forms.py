@@ -46,10 +46,9 @@ class ExamForm(ModelForm):
     class Meta:
         model = models.Exam
         fields = '__all__'
-        exclude = ['teacher', 'classroom']
+        exclude = ['teacher', 'classroom', 'total_marks']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'total_marks': forms.NumberInput(attrs={'class': 'form-control'}),
             'start_time': forms.DateTimeInput(attrs={'class': 'form-control'}),
             'end_time': forms.DateTimeInput(attrs={'class': 'form-control'})
         }

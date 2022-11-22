@@ -125,7 +125,7 @@
     <ul>
         <li><a href="{% url 'exam:view_exams_student' classroom.code %}">View Upcoming Exams</a></li>
         <li><a href="{% url 'exam:view_previous_student' classroom.slug %}">View Previous Exams</a></li>
-
+        <li><a href="{% url 'exam:view_students_attendance' code=classroom.code %}">Attendance</a></li>
     </ul>
     </ul>
 </div>

@@ -48,8 +48,8 @@ class Exam(models.Model):
     Qpaper = models.ForeignKey(Question_Paper, on_delete=models.CASCADE)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
-    start_time = models.DateTimeField(default=datetime.now())
-    end_time = models.DateTimeField(default=datetime.now())
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     total_marks = models.IntegerField()
 
     def __str__(self):

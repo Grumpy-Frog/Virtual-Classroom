@@ -12,7 +12,7 @@ class Profile(models.Model):
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
 
     def __str__(self):
-        return "@{}".format(self.user.username)
+        return "{}".format(self.user.username)
 
 
 @receiver(post_save, sender=User)

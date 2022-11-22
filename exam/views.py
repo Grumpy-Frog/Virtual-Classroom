@@ -1,3 +1,4 @@
+import threading
 from datetime import datetime, timedelta
 
 import pytz
@@ -6,12 +7,16 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.utils import timezone
 
 from classroom.models import Classroom
 from . import models
 from . import forms
 # Create your views here.
-from django.views import generic
+from django.views import generic, View
+from django.http import JsonResponse
+import json
+from django.core.mail import EmailMessage
 
 
 class AddQuestion(LoginRequiredMixin, generic.CreateView):
@@ -118,7 +123,9 @@ def view_exams_student(request, code):
             if models.StuExam_DB.objects.get(examname=exam.name, student=request.user).completed == 1:
                 list_of_completed.append(exam)
         else:
-            list_un.append(exam)
+            IST = pytz.timezone('Asia/Dhaka')
+            if exam.end_time > datetime.now(IST):
+                list_un.append(exam)
 
     return render(request, 'exam/student_view_exam.html', {
         'exams': list_un,
@@ -212,7 +219,10 @@ def view_students_attendance(request, code):
             if models.StuExam_DB.objects.get(examname=exam.name, student=request.user).completed == 1:
                 list_of_completed.append(exam)
         else:
-            list_un.append(exam)
+            IST = pytz.timezone('Asia/Dhaka')
+            if exam.end_time < datetime.now(IST):
+                list_un.append(exam)
+
 
     return render(request, 'exam/attendance.html', {
         'exams': list_un,
@@ -232,19 +242,16 @@ def appear_exam(request, id):
     student = request.user
     if request.method == 'GET':
         exam = models.Exam.objects.get(pk=id)
-        time_now = datetime.now()
-
-        # time_l = time_now - exam.start_time
-        # time_left = convert(time_l.seconds)
 
         IST = pytz.timezone('Asia/Dhaka')
-        time_left = datetime.now(IST) - exam.start_time
-        time_adjusted = datetime.now(IST) + timedelta(hours=12)
 
         """
+        time_left = datetime.now(IST) - exam.start_time
+        time_adjusted = datetime.now(IST) - timedelta(hours=6)
+
         time_left1 = datetime.now(timezone.utc) - exam.start_time
         time_left2 = exam.start_time - datetime.now(timezone.utc)
-        print(datetime.now())
+        
         print(datetime.now(IST))
         print(exam.start_time)
         print(time_left)
@@ -253,13 +260,21 @@ def appear_exam(request, id):
         print(exam.start_time - time_adjusted)
         """
 
-        if exam.start_time > time_adjusted:
-            return render(request, 'exam/Prior_to_exam.html')
+        isStart = 1
 
-        if exam.end_time > time_adjusted:
-            return render(request, 'exam/Prior_to_exam.html')
+        if exam.start_time > datetime.now(IST):
+            return render(request, 'exam/Prior_to_exam.html', {"time": isStart})
 
-        time_delta = exam.end_time - exam.start_time
+        isStart = 0
+
+        if exam.end_time < datetime.now(IST):
+            return render(request, 'exam/Prior_to_exam.html', {"time": isStart})
+
+        if exam.start_time < datetime.now(IST) <= exam.end_time:
+            time_delta = exam.end_time - datetime.now(IST)
+        else:
+            time_delta = exam.end_time - exam.start_time
+
         time = convert(time_delta.seconds)
         time = time.split(":")
         mins = time[0]
@@ -319,8 +334,7 @@ def appear_exam(request, id):
                 '4': "option4",
                 '5': 'notFound',
             }
-            print(ans)
-            print(ques.Answer)
+
             print(ans)
             print(ques.Answer)
             print(ans)
@@ -345,3 +359,34 @@ def result(request, id):
     exam = models.Exam.objects.get(pk=id)
     score = models.StuExam_DB.objects.get(student=student, examname=exam.name, qpaper=exam.Qpaper).score
     return render(request, 'exam/result.html', {'exam': exam, "score": score})
+
+
+class EmailThread(threading.Thread):
+    def __init__(self, email):
+        self.email = email
+        threading.Thread.__init__(self)
+
+    def run(self):
+        self.email.send(fail_silently=False)
+
+
+class Cheating(View):
+    def get(self, request, professorname):
+        print("sending")
+        print("sending")
+        print("sending")
+        print("sending")
+        print("sending")
+        student = str(request.user.username)
+        email = User.objects.get(username=professorname).email
+        email_subject = 'Student Cheating'
+        email_body = 'Student caught changing window for 5 times. Student username is :' + student
+        fromEmail = 'noreply@exam.com'
+        email_obj = EmailMessage(
+            email_subject,
+            email_body,
+            fromEmail,
+            [email],
+        )
+        EmailThread(email_obj).start()
+        return JsonResponse({'sent': True})
