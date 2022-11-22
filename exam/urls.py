@@ -11,7 +11,6 @@ urlpatterns = [
     path('teacher/viewpreviousexams/<code>', views.view_previousexams_teacher, name="teacher-previous"),
     path('teacher/viewresults/<code>', views.view_results_teacher, name="teacher_view_result"),
     path('prof/viewstudents/<code>', views.view_students_teacher, name="teacher-student"),
-    path('cheat/<str:professorname>', views.Cheating.as_view(), name="cheat"),
 
     path('student/viewexams/<code>', views.view_exams_student, name="view_exams_student"),
     path('student/view_previous_exams/<slug>', views.student_view_previous, name="view_previous_student"),

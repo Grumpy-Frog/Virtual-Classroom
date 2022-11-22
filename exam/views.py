@@ -223,7 +223,6 @@ def view_students_attendance(request, code):
             if exam.end_time < datetime.now(IST):
                 list_un.append(exam)
 
-
     return render(request, 'exam/attendance.html', {
         'exams': list_un,
         'completed': list_of_completed

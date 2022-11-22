@@ -1,4 +1,7 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, get_user_model, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -60,14 +63,3 @@ class Confirm(TemplateView):
     template_name = 'accounts/confirmation.html'
 
 
-def signup(request):
-    if request.method == 'POST':
-        form = forms.UserCreateForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()
-            user.save()
-            return redirect('accounts:login')
-    else:
-        form = forms.UserCreateForm()
-    return render(request, 'accounts/signup.html', {'form': form})
