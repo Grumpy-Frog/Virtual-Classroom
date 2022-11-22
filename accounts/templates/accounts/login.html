@@ -29,6 +29,6 @@
         <label>    </label>
         OR Continue with
         <a href="{% provider_login_url 'google' %}"><img class="card-img-top" src="{% static 'img/google.png' %}">Google</a>
-        <p><a href="#">forgot password?</a></p>
+        <p><a href="{% url 'accounts:password_reset' %}">forgot password?</a></p>
     </div>
 {% endblock %}

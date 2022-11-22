@@ -1,3 +1,6 @@
+from datetime import datetime
+
+import pytz
 from braces.views import SelectRelatedMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -70,6 +73,11 @@ class AssignmentDetail(LoginRequiredMixin, generic.DetailView):
         submitted = AssignmentSubmission.objects.filter(classroom=classroom, assignment=assignment,
                                                         student=student).exists()
         context["user_submitted"] = submitted
+        if submitted:
+            stu_submission = AssignmentSubmission.objects.get(classroom=classroom, assignment=assignment,
+                                                              student=student)
+            context['submission'] = stu_submission
+
         class_member = ClassMember.objects.get(user=self.request.user, classroom=classroom)
         user_role = class_member.role
         context["user_role_in_classroom"] = user_role
@@ -93,6 +101,12 @@ class SubmitAssignment(LoginRequiredMixin, generic.CreateView):
         self.object.classroom = classroom
         assignment_id = self.kwargs.get("pk")
         assignment = Assignment.objects.get(pk=assignment_id)
+        due = assignment.due
+        IST = pytz.timezone('Asia/Dhaka')
+        if datetime.now(IST) > due:
+            self.object.turn_in_status = "late"
+        else:
+            self.object.turn_in_status = "timely"
         self.object.assignment = assignment
         self.object.save()
         return super().form_valid(form)
