@@ -7,6 +7,11 @@
         <a href=# download= {{ submission.student.username }} >
             <img src="{{ submission.file }}" alt="File" width="104" height="142">
         </a>
+        {% if submission.turn_in_status == 'late' %}
+        <p>turned in late</p>
+        {% else %}
+        <p>turned in</p>
+        {% endif %}
 		<div class="media-footer">
 
 		</div>

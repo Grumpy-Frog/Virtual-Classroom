@@ -20,4 +20,5 @@ class AssignmentSubmission(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="submission")
     file = models.FileField(upload_to='media')
     submission_time = models.DateTimeField(auto_now=True)
+    turn_in_status = models.CharField(max_length=10)
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="submission")
