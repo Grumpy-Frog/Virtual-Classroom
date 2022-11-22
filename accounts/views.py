@@ -1,4 +1,7 @@
-from django.contrib.auth import authenticate, login, get_user_model
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, get_user_model, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -60,14 +63,23 @@ class Confirm(TemplateView):
     template_name = 'accounts/confirmation.html'
 
 
-def signup(request):
+@login_required(login_url='accounts:login')
+def change_password(request):
     if request.method == 'POST':
-        form = forms.UserCreateForm(request.POST)
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             user = form.save()
-            user.refresh_from_db()
-            user.save()
-            return redirect('accounts:login')
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('login')
+        else:
+            messages.error(request, 'Please correct the error below.')
     else:
-        form = forms.UserCreateForm()
-    return render(request, 'accounts/signup.html', {'form': form})
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form
+    })
+
+
+
+
