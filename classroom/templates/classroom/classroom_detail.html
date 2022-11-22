@@ -14,9 +14,10 @@
             <a href="{% url 'classroom:leave' slug=classroom.slug %}" class="btn btn-lg btn-fill btn-warning"><span
                     class="glyphicon glyphicon-remove-circle"></span> Leave</a>
             {% if user_role_in_classroom == "teacher" %}
-                <a href="{% url 'assignment:create' code=classroom.code slug=classroom.slug %}"
-                   class="btn btn-lg btn-fill btn-warning"><span
-                        class="glyphicon glyphicon-remove-circle"></span> Post Assignment</a>
+                {% include "teacher_hamburger.html" %}
+            {% else %}
+                {% include "student_hamburger.html" %}
+
             {% endif %}
         {% endif %}
 

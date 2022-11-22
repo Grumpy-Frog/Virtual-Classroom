@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 from django.urls import reverse_lazy
 from django.views import generic
+from . import forms
 
 from .models import Assignment, AssignmentSubmission
 from classroom.models import Classroom, ClassMember
@@ -12,7 +13,7 @@ from classroom.models import Classroom, ClassMember
 
 class CreateAssignment(LoginRequiredMixin, generic.CreateView):
     model = Assignment
-    fields = ("title", "description", "due", "points")
+    form_class = forms.AssignmentForm
 
     def get_success_url(self):
         return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
