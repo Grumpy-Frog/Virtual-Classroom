@@ -1,102 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="76f0756a-619f-4584-a29e-8db5e7f9c9ce" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Virtual_Classroom/asgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Virtual_Classroom/views.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Virtual_Classroom/wsgi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/articles/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/articles/migrations/0002_delete_article.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/articles/migrations/0003_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/articles/migrations/0004_article_is_accepted.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/articles/templates/articles/article_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication_channel/admin.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication_channel/migrations/0001_initial.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication_channel/migrations/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication_channel/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/communication_channel/templates/communication_channel/main.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/media/72325-swing-minimalism-4k-laptop-full-hd-1080p-hd-4k_ytJviV8.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/media/785694.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/media/785694_p7uJbDN.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/media/peakpx_1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/virtual-classroom-366708-eaf0ddc1a485.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/assets/AgoraRTC_N-4.14.0.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/chat-icon.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/chat-icon1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/leave.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/microphone.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/images/video.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/NoClassroomFound.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/test.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/thanks.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/migrations/0006_alter_profile_profile_pic.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/_messages.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/profile_seetings.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/profile_view.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/resetPassword.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/resetPasswordDone.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/resetPasswordSent.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/setNewPassword.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/templates/accounts/signup.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/accounts/widget.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/Virtual_Classroom/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication_channel/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/migrations/0002_alter_assignmentsubmission_file.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/migrations/0003_assignmentcomment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/migrations/0004_assignmentsubmission_turn_in_status_and_more.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/articles/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/_assignment.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_base.html" beforeDir="false" afterPath="$PROJECT_DIR$/articles/templates/articles/article_base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_confirm_delete.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/articles/templates/articles/article_form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_submission_form.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignment_submission_list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/assignmentsubmission_confirm_delete.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/templates/assignment/submitted_assignment.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/articles/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assignment/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classroom/templates/classroom/classroom_detail.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classroom/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classroom/views.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/articles/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/admin.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/articles/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/forms.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/migrations/0001_initial.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication_channel/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/Prior_to_exam.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/addquestionpaper.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/addquestions.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/after_ending_time.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/attendance.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/create_exam.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/exam_base.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/giveExam.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/result.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/resultsstudent.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/student_previous_exams.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/student_view_exam.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/teacher_view_previousexam.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/templates/exam/viewstudents.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/communication_channel/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/urls.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/exam/views.py" beforeDir="false" />
-    </list>
+    <list default="true" id="76f0756a-619f-4584-a29e-8db5e7f9c9ce" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -209,6 +114,7 @@
       <workItem from="1670179107210" duration="621000" />
       <workItem from="1671355098197" duration="10000" />
       <workItem from="1671543160001" duration="1172000" />
+      <workItem from="1671547163555" duration="20000" />
     </task>
     <servers />
   </component>
