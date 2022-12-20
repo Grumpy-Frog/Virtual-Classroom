@@ -244,30 +244,22 @@ def appear_exam(request, id):
 
         IST = pytz.timezone('Asia/Dhaka')
 
-        """
         time_left = datetime.now(IST) - exam.start_time
         time_adjusted = datetime.now(IST) - timedelta(hours=6)
 
         time_left1 = datetime.now(timezone.utc) - exam.start_time
         time_left2 = exam.start_time - datetime.now(timezone.utc)
-        
+
         print(datetime.now(IST))
         print(exam.start_time)
-        print(time_left)
-        print(time_left1)
-        print(time_left2)
-        print(exam.start_time - time_adjusted)
-        """
-
-        isStart = 1
+        print(exam.start_time - datetime.now(IST))
+        print(datetime.now(IST) - exam.start_time)
 
         if exam.start_time > datetime.now(IST):
-            return render(request, 'exam/Prior_to_exam.html', {"time": isStart})
-
-        isStart = 0
+            return render(request, 'exam/Prior_to_exam.html')
 
         if exam.end_time < datetime.now(IST):
-            return render(request, 'exam/Prior_to_exam.html', {"time": isStart})
+            return render(request, 'exam/after_ending_time.html')
 
         if exam.start_time < datetime.now(IST) <= exam.end_time:
             time_delta = exam.end_time - datetime.now(IST)
@@ -360,32 +352,3 @@ def result(request, id):
     return render(request, 'exam/result.html', {'exam': exam, "score": score})
 
 
-class EmailThread(threading.Thread):
-    def __init__(self, email):
-        self.email = email
-        threading.Thread.__init__(self)
-
-    def run(self):
-        self.email.send(fail_silently=False)
-
-
-class Cheating(View):
-    def get(self, request, professorname):
-        print("sending")
-        print("sending")
-        print("sending")
-        print("sending")
-        print("sending")
-        student = str(request.user.username)
-        email = User.objects.get(username=professorname).email
-        email_subject = 'Student Cheating'
-        email_body = 'Student caught changing window for 5 times. Student username is :' + student
-        fromEmail = 'noreply@exam.com'
-        email_obj = EmailMessage(
-            email_subject,
-            email_body,
-            fromEmail,
-            [email],
-        )
-        EmailThread(email_obj).start()
-        return JsonResponse({'sent': True})

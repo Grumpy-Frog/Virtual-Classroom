@@ -60,6 +60,21 @@ class DeleteAssignment(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteVie
 
 class UpdateAssignment(LoginRequiredMixin, generic.UpdateView):
     model = Assignment
+    template_name = 'assignment/assignment_form.html'
+    form_class = forms.AssignmentForm
+
+    def get_success_url(self):
+        return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
+        slug = self.kwargs.get("slug")
+        classroom = Classroom.objects.get(slug=slug)
+        self.object.classroom = classroom
+
+        self.object.save()
+        return super().form_valid(form)
 
 
 class AssignmentDetail(LoginRequiredMixin, generic.DetailView):

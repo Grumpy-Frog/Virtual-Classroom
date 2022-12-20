@@ -16,6 +16,9 @@
                         <span class="text-danger icon-label">Delete</span>
                     </a>
 
+                    <a href="{% url 'assignment:update' pk=assignment.pk slug=assignment.classroom.slug %}" class="btn btn-lg btn-fill"><span
+                            class="glyphicon glyphicon-plus-sign"></span>Update</a>
+
                     <a href="{% url 'assignment:view' pk=assignment.pk %}" class="btn btn-lg btn-fill"><span
                             class="glyphicon glyphicon-plus-sign"></span>View Submissions</a>
 

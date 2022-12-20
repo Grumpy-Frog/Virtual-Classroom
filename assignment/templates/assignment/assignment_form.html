@@ -3,11 +3,15 @@
 {% load bootstrap3 %}
 
 {% block post_content %}
-<h4>Create New Assignment</h4>
-<form method="POST" id="postForm">
-	{% csrf_token %}
-	{% bootstrap_form form %}
+    {% if not form.instance.pk %}
+    <h4>Create New Assignment</h4>
+    {% else %}
+    <h4>Update Assignment</h4>
+    {% endif %}
+    <form method="POST" id="postForm">
+        {% csrf_token %}
+        {% bootstrap_form form %}
 
-	<input type="submit" value="Post" class="btn btn-primary btn-large">
-</form>
+        <input type="submit" value="Post" class="btn btn-primary btn-large">
+    </form>
 {% endblock %}
