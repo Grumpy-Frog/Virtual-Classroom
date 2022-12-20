@@ -8,4 +8,3 @@ class GroupMemberInline(admin.TabularInline):
 
 
 admin.site.register(models.Classroom)
-admin.site.register(models.ClassMember)

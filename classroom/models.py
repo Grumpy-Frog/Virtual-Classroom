@@ -1,3 +1,5 @@
+import random
+from string import ascii_lowercase
 
 from django.urls import reverse
 from django.db import models
@@ -19,18 +21,19 @@ register = template.Library()
 
 
 class Classroom(models.Model):
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=False)
     description = models.CharField(max_length=255, default='')
     slug = models.SlugField(allow_unicode=True, unique=True)
-    course = models.CharField(max_length=256, blank=True, default='')
+    course = models.TextField(blank=True, default='')
     course_html = models.TextField(editable=False, default='', blank=True)
-    code = models.CharField(max_length=255, editable=False)
-    members = models.ManyToManyField(User, through="ClassMember", related_name='members')
+    code = models.CharField(max_length=255,editable=False)
+    members = models.ManyToManyField(User,editable=True, through="ClassMember", related_name='members')
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
+        self.code = "".join([random.choice(ascii_lowercase) for _ in range(7)])
         self.slug = slugify(self.name)
         self.course_html = misaka.html(self.course)
         super().save(*args, **kwargs)
@@ -45,13 +48,14 @@ class Classroom(models.Model):
 class ClassMember(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name="memberships")
     user = models.ForeignKey(User, related_name='user_classrooms', on_delete=models.CASCADE)
-    role = models.CharField(max_length=56)
+    role = models.CharField(max_length=56, editable=True)
 
     def __str__(self):
         return self.user.username
-
     class Meta:
         unique_together = ("classroom", "user")
+
+
 
 
 
