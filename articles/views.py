@@ -1,16 +1,18 @@
+import os.path
+
 from braces.views import SelectRelatedMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.template import loader
-from django.views.generic import TemplateView
-
 from django.urls import reverse_lazy, reverse
 from django.views import generic
+from django.views.generic import TemplateView
 
-from .models import Article
-from classroom.models import Classroom, ClassMember
+from classroom.models import Classroom
+from .forms import CommentForm
+from .models import Article, ArticleComment
 
 
 class CreateArticle(LoginRequiredMixin, generic.CreateView):
@@ -51,7 +53,7 @@ class DeleteArticle(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
     select_related = ("creator", "classroom")
 
     def get_success_url(self):
-        return reverse_lazy("Article:all", kwargs={"slug": self.kwargs.get("slug")})
+        return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -93,6 +95,19 @@ class PendingArticlePage(TemplateView):
         return context
 
 
+class MyArticlePage(TemplateView):
+    template_name = 'articles/my_articles.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['articles'] = Article.objects.all()
+        code = self.kwargs.get("code")
+        context['classroom_code'] = code
+        context['user'] = self.request.user
+        # print(self.request.POST.get('classroom_code'))
+        return context
+
+
 class UpdateArticle(TemplateView):
     template_name = 'articles/update_article.html'
 
@@ -110,8 +125,11 @@ class UpdateArticle(TemplateView):
 def UpdateRecord(request, *args, **kwargs):
     pk = kwargs.get('pk')
 
+    title = request.POST['title']
     description = request.POST['description']
     article = Article.objects.get(pk=pk)
+
+    article.title = title
     article.description = description
     article.is_accepted = True
     article.save()
@@ -120,26 +138,60 @@ def UpdateRecord(request, *args, **kwargs):
     code = classroom.code
     slug = classroom.slug
     name = classroom.name
-    return HttpResponseRedirect(reverse("article:articles",args=args, kwargs={"code": code, "slug": slug, "name": name}))
+    return HttpResponseRedirect(
+        reverse("article:articles", args=args, kwargs={"code": code, "slug": slug, "name": name}))
 
-'''
-class AcceptArticle(LoginRequiredMixin, generic.CreateView):
+
+class ViewArticle(TemplateView, LoginRequiredMixin, SelectRelatedMixin):
+    template_name = 'articles/article_view.html'
     model = Article
-    fields = ('file',)
-    template_name = "assignment/assignment_submission_form.html"
+    fields = ("title", "description")
 
-    def get_success_url(self):
-        return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
+    def get_context_data(self, *args, **kwargs):
+        article = Article.objects.get(pk=self.kwargs.get('pk'))
 
-    def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.student = self.request.user
-        slug = self.kwargs.get("slug")
-        classroom = Classroom.objects.get(slug=slug)
-        self.object.classroom = classroom
-        assignment_id = self.kwargs.get("pk")
-        assignment = Assignment.objects.get(pk=assignment_id)
-        self.object.assignment = assignment
-        self.object.save()
-        return super().form_valid(form)
-'''
+        context = super().get_context_data(*args, **kwargs)
+        context['article'] = article
+        context['user'] = self.request.user
+
+        comments = ArticleComment.objects.filter(article=article, classroom=article.classroom)
+        # print(comments)
+        context['comments'] = comments
+
+        return context
+
+
+def handle_uploaded_image(f):
+    with open('some/file/name.txt', 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+def AddComment(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+
+    comment_text = request.POST['comment']
+
+    article = Article.objects.get(pk=pk)
+
+    try:
+        if request.FILES['image']:
+            dir = "comment/"
+            image = request.FILES['image']
+            fss = FileSystemStorage()
+            file = fss.save(dir + image.name, image)
+            file_url = fss.url(file)
+            comment = ArticleComment(classroom=article.classroom, student=request.user, comment_text=comment_text,
+                                     comment_image=dir + os.path.basename(file_url),
+                                     article=article)
+
+        else:
+            comment = ArticleComment(classroom=article.classroom, student=request.user, comment_text=comment_text,
+                                     article=article)
+    except:
+        comment = ArticleComment(classroom=article.classroom, student=request.user, comment_text=comment_text,
+                                 article=article)
+
+    comment.save()
+    return HttpResponseRedirect(
+        reverse("article:article_view", args=args, kwargs={"pk": pk}))

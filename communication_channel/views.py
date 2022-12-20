@@ -17,12 +17,14 @@ def lobby(request):
 def room(request):
     return render(request, 'communication_channel/room.html')
 
+'''
 def getRoomName(request):
 
     room_name = 'CSE-4500'
 
     return JsonResponse({'room_name': room_name}, safe=False)
 
+'''
 
 def getToken(request):
     appId = "ce751ed63bd4455790025d03f4f26af5"

@@ -1,18 +1,22 @@
 import os
 import mimetypes
+from datetime import datetime
+
+import pytz
 
 from Virtual_Classroom import settings
 
 from braces.views import SelectRelatedMixin
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import render
 
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import generic
 
-from .models import Assignment, AssignmentSubmission
+from . import forms
+from .models import Assignment, AssignmentSubmission, AssignmentComment
 from classroom.models import Classroom, ClassMember
 
 
@@ -62,6 +66,21 @@ class DeleteAssignment(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteVie
 
 class UpdateAssignment(LoginRequiredMixin, generic.UpdateView):
     model = Assignment
+    template_name = 'assignment/assignment_form.html'
+    form_class = forms.AssignmentForm
+
+    def get_success_url(self):
+        return reverse_lazy("classroom:single", kwargs={"slug": self.kwargs.get("slug")})
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
+        slug = self.kwargs.get("slug")
+        classroom = Classroom.objects.get(slug=slug)
+        self.object.classroom = classroom
+
+        self.object.save()
+        return super().form_valid(form)
 
 
 class AssignmentDetail(LoginRequiredMixin, generic.DetailView):
@@ -75,9 +94,19 @@ class AssignmentDetail(LoginRequiredMixin, generic.DetailView):
         submitted = AssignmentSubmission.objects.filter(classroom=classroom, assignment=assignment,
                                                         student=student).exists()
         context["user_submitted"] = submitted
+        if submitted:
+            stu_submission = AssignmentSubmission.objects.get(classroom=classroom, assignment=assignment,
+                                                              student=student)
+            context['submission'] = stu_submission
+
         class_member = ClassMember.objects.get(user=self.request.user, classroom=classroom)
         user_role = class_member.role
         context["user_role_in_classroom"] = user_role
+
+        comments = AssignmentComment.objects.filter(assignment=assignment, classroom=assignment.classroom)
+        # print(comments)
+        context['comments'] = comments
+
         print(submitted)
         return context
 
@@ -98,6 +127,12 @@ class SubmitAssignment(LoginRequiredMixin, generic.CreateView):
         self.object.classroom = classroom
         assignment_id = self.kwargs.get("pk")
         assignment = Assignment.objects.get(pk=assignment_id)
+        due = assignment.due
+        IST = pytz.timezone('Asia/Dhaka')
+        if datetime.now(IST) > due:
+            self.object.turn_in_status = "late"
+        else:
+            self.object.turn_in_status = "timely"
         self.object.assignment = assignment
         self.object.save()
         return super().form_valid(form)
@@ -135,6 +170,7 @@ class Unsubmit(LoginRequiredMixin, SelectRelatedMixin, generic.DeleteView):
         messages.success(self.request, "Unsubmitted. Don't forget to turn in your assignment")
         return super().delete(*args, **kwargs)
 
+
 '''
 
 def download_file(request):
@@ -149,5 +185,23 @@ def download_file(request):
         return response
 '''
 
+
 def download_file(request):
     return HttpResponse(settings.MEDIA_URL)
+
+
+def AddComment(request, *args, **kwargs):
+    pk = kwargs.get('pk')
+
+    comment_text = request.POST['comment']
+
+    assignment = Assignment.objects.get(pk=pk)
+
+    comment = AssignmentComment(classroom=assignment.classroom, student=request.user, comment_text=comment_text,
+                                assignment=assignment)
+
+    comment.save()
+
+    slug = assignment.classroom.slug
+    return HttpResponseRedirect(
+        reverse("assignment:single", args=args, kwargs={"slug": slug, "pk": pk}))

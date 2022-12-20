@@ -39,11 +39,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
     'bootstrap3',
+    'bootstrap4',
     'accounts',
     'communication_channel',
     'classroom',
     'articles',
     'assignment',
+    'exam',
+    'widget_tweaks',
     'gdstorage',
     'allauth',
     'allauth.account',
@@ -116,7 +119,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 

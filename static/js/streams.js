@@ -10,10 +10,15 @@ let UID = sessionStorage.getItem('UID')
 
 let NAME = sessionStorage.getItem('name')
 
-const client = AgoraRTC.createClient({mode:'rtc', codec:'vp8'})
+const client = AgoraRTC.createClient({mode: 'rtc', codec: 'vp8'})
 
 let localTracks = []
 let remoteUsers = {}
+
+// for screen share
+let localScreenTrack;
+let sharingScreen = false;
+
 
 let joinAndDisplayLocalStream = async () => {
     document.getElementById('room-name').innerText = CHANNEL
@@ -21,9 +26,9 @@ let joinAndDisplayLocalStream = async () => {
     client.on('user-published', handleUserJoined)
     client.on('user-left', handleUserLeft)
 
-    try{
+    try {
         UID = await client.join(APP_ID, CHANNEL, TOKEN, UID)
-    }catch(error){
+    } catch (error) {
         console.error(error)
         window.open('/', '_self')
     }
@@ -46,9 +51,9 @@ let handleUserJoined = async (user, mediaType) => {
     remoteUsers[user.uid] = user
     await client.subscribe(user, mediaType)
 
-    if (mediaType === 'video'){
+    if (mediaType === 'video') {
         let player = document.getElementById(`user-container-${user.uid}`)
-        if (player != null){
+        if (player != null) {
             player.remove()
         }
 
@@ -63,7 +68,7 @@ let handleUserJoined = async (user, mediaType) => {
         user.videoTrack.play(`user-${user.uid}`)
     }
 
-    if (mediaType === 'audio'){
+    if (mediaType === 'audio') {
         user.audioTrack.play()
     }
 }
@@ -74,7 +79,7 @@ let handleUserLeft = async (user) => {
 }
 
 let leaveAndRemoveLocalStream = async () => {
-    for (let i=0; localTracks.length > i; i++){
+    for (let i = 0; localTracks.length > i; i++) {
         localTracks[i].stop()
         localTracks[i].close()
     }
@@ -87,21 +92,111 @@ let leaveAndRemoveLocalStream = async () => {
 
 let toggleCamera = async (e) => {
     console.log('TOGGLE CAMERA TRIGGERED')
-    if(localTracks[1].muted){
+    if (localTracks[1].muted) {
         await localTracks[1].setMuted(false)
         e.target.style.backgroundColor = '#fff'
-    }else{
+    } else {
         await localTracks[1].setMuted(true)
         e.target.style.backgroundColor = 'rgb(255, 80, 80, 1)'
     }
 }
 
+//screen sharing
+let displayFrame = document.getElementById('stream__box')
+let videoFrames = document.getElementsByClassName('video-container')
+
+let expandVideoFrame = (e) => {
+
+    let child = displayFrame.children[0]
+    if (child) {
+        document.getElementById('streams').appendChild(child)
+    }
+
+    displayFrame.style.display = 'block'
+    displayFrame.appendChild(e.currentTarget)
+    userIdInDisplayFrame = e.currentTarget.id
+
+    for (let i = 0; videoFrames.length > i; i++) {
+        if (videoFrames[i].id != userIdInDisplayFrame) {
+            videoFrames[i].style.height = '100px'
+            videoFrames[i].style.width = '100px'
+        }
+    }
+
+}
+
+let switchToCamera = async () => {
+    let player = `<div class="video-container" id="user-container-${UID}">
+                    <div class="video-player" id="user-${UID}"></div>
+                 </div>`
+    displayFrame.insertAdjacentHTML('beforeend', player)
+
+    await localTracks[0].setMuted(true)
+    await localTracks[1].setMuted(true)
+
+    document.getElementById('mic-btn').classList.remove('active')
+    document.getElementById('screen-btn').classList.remove('active')
+
+    localTracks[1].play(`user-${UID}`)
+    await client.publish([localTracks[1]])
+}
+
+let toggleScreen = async (e) => {
+    let screenButton = e.currentTarget
+    let cameraButton = document.getElementById('camera-btn')
+
+    if (!sharingScreen) {
+        sharingScreen = true
+        console.log("What is happening")
+        screenButton.classList.add('active')
+        cameraButton.classList.remove('active')
+        cameraButton.style.display = 'none'
+
+        localScreenTracks = await AgoraRTC.createScreenVideoTrack()
+
+        document.getElementById(`user-container-${UID}`).remove()
+        displayFrame.style.display = 'block'
+
+        let player = `<div class="video-container" id="user-container-${UID}">
+                <div class="video-player" id="user-${UID}"></div>
+            </div>`
+
+        displayFrame.insertAdjacentHTML('beforeend', player)
+        document.getElementById(`user-container-${UID}`).addEventListener('click', expandVideoFrame)
+
+
+        userIdInDisplayFrame = `user-container-${UID}`
+        localScreenTracks.play(`user-${UID}`)
+
+        await client.unpublish([localTracks[1]])
+        await client.publish([localScreenTracks])
+
+        let videoFrames = document.getElementsByClassName('video__container')
+        for (let i = 0; videoFrames.length > i; i++) {
+            if (videoFrames[i].id != userIdInDisplayFrame) {
+                videoFrames[i].style.height = '100px'
+                videoFrames[i].style.width = '100px'
+            }
+        }
+        e.target.style.backgroundColor = 'rgb(255, 80, 80, 1)'
+
+    } else {
+        sharingScreen = false
+        cameraButton.style.display = 'block'
+        document.getElementById(`user-container-${UID}`).remove()
+        await client.unpublish([localScreenTracks])
+        e.target.style.backgroundColor = '#fff'
+        switchToCamera()
+    }
+}
+
+
 let toggleMic = async (e) => {
     console.log('TOGGLE MIC TRIGGERED')
-    if(localTracks[0].muted){
+    if (localTracks[0].muted) {
         await localTracks[0].setMuted(false)
         e.target.style.backgroundColor = '#fff'
-    }else{
+    } else {
         await localTracks[0].setMuted(true)
         e.target.style.backgroundColor = 'rgb(255, 80, 80, 1)'
     }
@@ -109,11 +204,11 @@ let toggleMic = async (e) => {
 
 let createMember = async () => {
     let response = await fetch('create_member/', {
-        method:'POST',
+        method: 'POST',
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         },
-        body:JSON.stringify({'name':NAME, 'room_name':CHANNEL, 'UID':UID})
+        body: JSON.stringify({'name': NAME, 'room_name': CHANNEL, 'UID': UID})
     })
     let member = await response.json()
     return member
@@ -128,19 +223,20 @@ let getMember = async (user) => {
 
 let deleteMember = async () => {
     let response = await fetch('delete_member/', {
-        method:'POST',
+        method: 'POST',
         headers: {
-            'Content-Type':'application/json'
+            'Content-Type': 'application/json'
         },
-        body:JSON.stringify({'name':NAME, 'room_name':CHANNEL, 'UID':UID})
+        body: JSON.stringify({'name': NAME, 'room_name': CHANNEL, 'UID': UID})
     })
     let member = await response.json()
 }
 
-window.addEventListener("beforeunload",deleteMember);
+window.addEventListener("beforeunload", deleteMember);
 
 joinAndDisplayLocalStream()
 
 document.getElementById('leave-btn').addEventListener('click', leaveAndRemoveLocalStream)
 document.getElementById('camera-btn').addEventListener('click', toggleCamera)
 document.getElementById('mic-btn').addEventListener('click', toggleMic)
+document.getElementById('screen-btn').addEventListener('click', toggleScreen)

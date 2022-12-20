@@ -1,7 +1,11 @@
 {% extends 'communication_channel/main.html' %}
 {% load static %}
 {% block content %}
-
+    <script>
+    function getURL() {
+        alert("The URL of this page is: " + window.location.href);
+    }
+    </script>
     <main>
         <section id="form-container">
 
@@ -10,6 +14,7 @@
             <div id="welcome-message">
                 <h1>Welcome to Virtual Classroom</h1>
                 <p>An online classroom platform!</p>
+
             </div>
 
             <form id="form1">

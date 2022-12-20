@@ -6,7 +6,7 @@ urlpatterns = [
     path('room/', views.room),
 
     path('lobby/get_token/', views.getToken),
-    path('lobby/get_room_name/', views.getRoomName),
+    #path('lobby/get_room_name/', views.getRoomName),
 
     path('room/create_member/', views.createMember),
     path('room/get_member/', views.getMember),

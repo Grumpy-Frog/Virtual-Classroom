@@ -27,6 +27,8 @@ urlpatterns = [
                   path('accounts/', include('allauth.urls')),
                   path('lobby/', include('communication_channel.urls')),
 
+                  path('exam/', include("exam.urls", namespace="exam")),
+
                   path('join_classroom/', views.JoinClassroom.as_view()),
                   path('join/', views.joinClassroom),
 
