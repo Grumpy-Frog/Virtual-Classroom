@@ -1,8 +1,8 @@
 # Virtual-Classroom
 
-<h1>
+<h3>
   Educational website where Teachers and Students can get connected with each other. Core features are: Google Authentication, Teachers can create classrooms, Assignment, Lecture Materials, Can take MCQ Exams where evaluation will be done automatically, Take Online class using Real-time video meeting with screen sharing. Students can share their knowledge in the Article Section and can do online meetings with their classmates. Users can change their profile information and password.
-</h1>
+</h3>
 
 ## User Profile
 
